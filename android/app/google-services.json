@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "408695213199",
+    "project_id": "kornia-89399",
+    "storage_bucket": "kornia-89399.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408695213199:android:9cac79e7c9a03956cff4fa",
+        "android_client_info": {
+          "package_name": "com.example.kornia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkC5w8E3czJGWG3OIxiJ3G9u8IBI6YXQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408695213199:android:18f23ca801d43505cff4fa",
+        "android_client_info": {
+          "package_name": "com.peregrinus.kornia_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkC5w8E3czJGWG3OIxiJ3G9u8IBI6YXQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

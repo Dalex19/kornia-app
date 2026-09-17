@@ -1,0 +1,174 @@
+# ==============================================================================
+# 🔐 1. ARCHIVOS SENSIBLES, CREDENCIALES Y SECRETOS
+# ==============================================================================
+# Variables de entorno
+.env
+.env.*
+*.env
+!.env.example
+*.env.local
+*.env.development
+*.env.production
+
+# Secretos y credenciales de APIs / Servicios
+secrets.json
+secrets.yaml
+secrets.env
+credentials.json
+auth.json
+service-account*.json
+serviceAccountKey*.json
+firebase-admin*.json
+
+# Certificados, llaves privadas y firmado de aplicaciones
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.pem
+*.cer
+*.crt
+*.key
+*.mobileprovision
+
+# Archivos de configuración de firmado y propiedades locales (Android / iOS)
+key.properties
+keystore.properties
+**/android/local.properties
+**/android/**/key.properties
+**/android/**/keystore.properties
+local.properties
+crashlytics-build.properties
+
+# ==============================================================================
+# 🎯 2. FLUTTER & DART (BUILD ARTIFACTS & DEPENDENCIES)
+# ==============================================================================
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+**/build/
+/coverage/
+**/doc/api/
+
+# FVM (Flutter Version Management) - Ignora el SDK local, conserva la config si existe
+.fvm/flutter_sdk
+.fvm/cache/
+.fvm/bin/
+.fvm/release_version
+
+# Obfuscación y símbolos de compilación
+app.*.symbols
+app.*.map.json
+
+# ==============================================================================
+# 🤖 3. ANDROID ESPECÍFICO
+# ==============================================================================
+**/android/.gradle/
+**/android/captures/
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/android/.cxx/
+**/android/**/build/
+
+# ==============================================================================
+# 🍎 4. IOS & MACOS ESPECÍFICO
+# ==============================================================================
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/ephemeral/
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/**/GeneratedPluginRegistrant.*
+**/ios/**/xcuserdata/
+**/ios/**/DerivedData/
+**/ios/**/*.moved-aside
+**/ios/Runner.xcodeproj/project.xcworkspace/xcuserdata/
+**/ios/Pods/Pods.xcodeproj/xcuserdata/
+
+**/macos/Flutter/ephemeral/
+**/macos/Flutter/Generated.xcconfig
+**/macos/Flutter/flutter_export_environment.sh
+**/macos/Pods/
+**/macos/.symlinks/
+**/macos/**/GeneratedPluginRegistrant.*
+**/macos/**/xcuserdata/
+**/macos/**/DerivedData/
+
+# ==============================================================================
+# 🪟 5. WINDOWS & LINUX ESPECÍFICO
+# ==============================================================================
+**/windows/flutter/ephemeral/
+**/windows/flutter/generated_plugin_registrant.*
+**/windows/flutter/generated_plugins.cmake
+**/windows/flutter/ephemeral/.plugin_symlinks/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+x64/
+x86/
+
+**/linux/flutter/ephemeral/
+**/linux/flutter/generated_plugin_registrant.*
+**/linux/flutter/generated_plugins.cmake
+
+# ==============================================================================
+# 💻 6. IDES Y EDITORES DE CÓDIGO
+# ==============================================================================
+# IntelliJ / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+kornia.iml
+kornia_android.iml
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# ==============================================================================
+# 📁 7. SISTEMA OPERATIVO Y LOGS
+# ==============================================================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Logs y volcados de memoria
+*.log
+*.crash
+*.stackdump
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Misceláneos
+*.class
+*.pyc
+*.swp
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/

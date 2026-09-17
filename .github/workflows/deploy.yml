@@ -1,0 +1,52 @@
+name: Build & Deploy to Firebase App Distribution
+
+# Se dispara cuando se hace push a main (esto incluye el merge de un PR).
+# GitHub no distingue "PR aceptado" como evento propio; un push a main
+# que resulta de un merge de PR cae dentro de este evento.
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    name: Build APK y desplegar a testers
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java (requerido por Gradle/Android)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'  
+          channel: 'stable'
+          cache: true
+
+      - name: Instalar dependencias
+        run: flutter pub get
+
+      - name: Ejecutar tests
+        run: flutter test
+
+        - name: Build APK release
+        run: flutter build apk --release --build-number=$((3 + ${{ github.run_number }}))
+
+      - name: Deploy a Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          groups: testers                         
+          file: build/app/outputs/flutter-apk/app-release.apk
+          releaseNotes: |
+            Build automático desde main
+            Commit: ${{ github.sha }}
+            Mensaje: ${{ github.event.head_commit.message }}

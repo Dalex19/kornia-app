@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../../../core/services/onboarding_storage_service.dart';
+import '../../../../core/router/splash_notifier.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../navigation/ui/screens/main_navigation_screen.dart';
-import '../../../onboarding/ui/screens/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,8 +15,7 @@ class _SplashScreenState extends State<SplashScreen>
   late final AnimationController _animationController;
   late final Animation<double> _fadeAnimation;
   late final Animation<double> _scaleAnimation;
-  Timer? _navigationTimer;
-  final OnboardingStorageService _storageService = OnboardingStorageService();
+  Timer? _splashTimer;
 
   @override
   void initState() {
@@ -35,42 +32,23 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _scaleAnimation = Tween<double>(begin: 0.88, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeOutCubic,
-      ),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
     );
 
     _animationController.forward();
 
-    _navigationTimer = Timer(const Duration(milliseconds: 2500), _handleNavigation);
-  }
-
-  Future<void> _handleNavigation() async {
-    final bool hasSeen = await _storageService.hasSeenOnboarding();
-
-    if (!mounted) return;
-
-    final Widget nextScreen =
-        hasSeen ? const MainNavigationScreen() : const OnboardingScreen();
-
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 600),
-        pageBuilder: (context, animation, secondaryAnimation) => nextScreen,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-      ),
+    // [DISPARA] Al cumplirse los 2500 ms, SplashScreen avisa que terminó.
+    // No decide el destino: delega esa responsabilidad a splashNotifier,
+    // que a su vez notifica a GoRouter para que ejecute el redirect.
+    _splashTimer = Timer(
+      const Duration(milliseconds: 2500),
+      splashNotifier.resolveDestination, // ← único punto de salida del splash
     );
   }
 
   @override
   void dispose() {
-    _navigationTimer?.cancel();
+    _splashTimer?.cancel();
     _animationController.dispose();
     super.dispose();
   }
@@ -84,10 +62,7 @@ class _SplashScreenState extends State<SplashScreen>
           gradient: RadialGradient(
             center: Alignment.center,
             radius: 1.1,
-            colors: [
-              AppColors.deepEarth,
-              AppColors.darkBackground,
-            ],
+            colors: [AppColors.deepEarth, AppColors.darkBackground],
           ),
         ),
         child: Center(

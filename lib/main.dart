@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:liquid_tabbar_minimize/liquid_tabbar_minimize.dart';
-import 'core/theme/app_colors.dart';
-import 'features/splash/ui/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'core/router/app_router.dart';
+import 'core/theme/app_colors.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -18,12 +17,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Kornia',
       debugShowCheckedModeBanner: false,
-      navigatorObservers: [
-        LiquidRouteObserver.instance,
-      ],
+      routerConfig: appRouter,
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: AppColors.darkBackground,
@@ -35,7 +32,6 @@ class MyApp extends StatelessWidget {
           secondary: AppColors.terracotta,
         ),
       ),
-      home: const SplashScreen(),
     );
   }
 }

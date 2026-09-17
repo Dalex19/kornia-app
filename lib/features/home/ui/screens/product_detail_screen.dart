@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/image_preview_helper.dart';
 import '../../utils/product_items.dart';
@@ -554,7 +555,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   children: [
                     // Back button (supports gesture or tap)
                     GestureDetector(
-                      onTap: () => Navigator.of(context).maybePop(),
+                      onTap: () => context.pop(),
                       child: Container(
                         width: 40,
                         height: 40,

@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/image_preview_helper.dart';
 import '../widget/product_card.dart';
 import '../../utils/product_items.dart';
-import 'product_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -219,13 +219,12 @@ class HomeScreen extends StatelessWidget {
                     item: item,
                     heroTag: heroTag,
                     onTap: () {
-                      Navigator.of(context).push(
-                        CupertinoPageRoute(
-                          builder: (context) => ProductDetailScreen(
-                            item: item,
-                            heroTag: heroTag,
-                          ),
-                        ),
+                      context.push(
+                        RouteNames.productDetailPath(item.id),
+                        extra: <String, dynamic>{
+                          'item': item,
+                          'heroTag': heroTag,
+                        },
                       );
                     },
                   );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -201,16 +202,22 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 28),
 
-              // Grid de Productos / Piezas
+              // Grid de Productos / Piezas Dinámico
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: mockProductItems.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate:  SliverQuiltedGridDelegate(
                   crossAxisCount: 2,
+                  mainAxisSpacing: 14,
                   crossAxisSpacing: 14,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 0.57,
+                  repeatPattern: QuiltedGridRepeatPattern.inverted,
+                  pattern: [
+                    QuiltedGridTile(2, 1),
+                    QuiltedGridTile(1, 1),
+                    QuiltedGridTile(1, 1),
+                    QuiltedGridTile(1, 2),
+                  ],
                 ),
                 itemBuilder: (context, index) {
                   final item = mockProductItems[index];
@@ -232,35 +239,6 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // Dev tool: Reset onboarding
-              // OutlinedButton.icon(
-              //   onPressed: () => _resetOnboardingAndRestart(context),
-              //   icon: const Icon(
-              //     Icons.refresh,
-              //     color: AppColors.bronzeGold,
-              //     size: 18,
-              //   ),
-              //   label: const Text(
-              //     'Reiniciar Onboarding (Pruebas)',
-              //     style: TextStyle(
-              //       color: AppColors.bronzeGold,
-              //       fontSize: 13,
-              //       fontWeight: FontWeight.w500,
-              //     ),
-              //   ),
-              //   style: OutlinedButton.styleFrom(
-              //     side: BorderSide(
-              //       color: AppColors.bronzeGold.withValues(alpha: 0.5),
-              //     ),
-              //     padding: const EdgeInsets.symmetric(
-              //       horizontal: 16,
-              //       vertical: 10,
-              //     ),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(10),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),

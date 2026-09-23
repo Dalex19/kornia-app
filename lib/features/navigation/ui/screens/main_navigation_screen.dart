@@ -25,10 +25,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.darkBackground,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: LiquidBottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -60,6 +57,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             label: 'Información',
           ),
         ],
+        forceCustomBar: true,
       ),
     );
   }

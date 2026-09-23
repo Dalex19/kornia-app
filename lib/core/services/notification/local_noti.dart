@@ -10,6 +10,11 @@ Future<void> setupLocalNotifications() async {
     requestAlertPermission: true,
     requestBadgePermission: true,
     requestSoundPermission: true,
+    defaultPresentAlert: true,
+    defaultPresentSound: true,
+    defaultPresentBadge: true,
+    defaultPresentBanner: true,
+    defaultPresentList: true,
   );
 
   const initSettings = InitializationSettings(
@@ -60,6 +65,13 @@ void listenForegroundNotifications() {
             importance: Importance.high,
             priority: Priority.high,
           ),
+          iOS: DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+            presentBanner: true,
+            presentList: true,
+          ),
         ),
       );
     }
@@ -103,6 +115,8 @@ Future<void> showTestNotification() async {
           presentAlert: true,
           presentBadge: true,
           presentSound: true,
+          presentBanner: true,
+          presentList: true,
         ),
       ),
     );

@@ -14,10 +14,7 @@ class HomeScreen extends StatelessWidget {
     ImagePreviewHelper.show(
       context: context,
       heroTag: 'app_logo_hero',
-      imageWidget: Image.asset(
-        'assets/images/logo.jpg',
-        fit: BoxFit.cover,
-      ),
+      imageWidget: Image.asset('assets/images/logo.jpg', fit: BoxFit.cover),
     );
   }
 
@@ -207,7 +204,7 @@ class HomeScreen extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: mockProductItems.length,
-                gridDelegate:  SliverQuiltedGridDelegate(
+                gridDelegate: SliverQuiltedGridDelegate(
                   crossAxisCount: 2,
                   mainAxisSpacing: 14,
                   crossAxisSpacing: 14,
@@ -238,7 +235,6 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 20),
-
             ],
           ),
         ),

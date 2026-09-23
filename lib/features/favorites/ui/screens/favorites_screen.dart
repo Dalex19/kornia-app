@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../home/ui/screens/product_detail_screen.dart';
 import '../../../home/ui/widget/product_card.dart';
 import '../../../home/utils/product_items.dart';
 
@@ -119,13 +119,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           item: item,
                           heroTag: heroTag,
                           onTap: () {
-                            Navigator.of(context).push(
-                              CupertinoPageRoute(
-                                builder: (context) => ProductDetailScreen(
-                                  item: item,
-                                  heroTag: heroTag,
-                                ),
-                              ),
+                            context.push(
+                              RouteNames.productDetailPath(item.id),
+                              extra: <String, dynamic>{
+                                'item': item,
+                                'heroTag': heroTag,
+                              },
                             );
                           },
                         );

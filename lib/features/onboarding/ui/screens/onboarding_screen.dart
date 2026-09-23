@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/router/route_names.dart';
+import '../../../../core/router/splash_notifier.dart';
 import '../../../../core/services/onboarding_storage_service.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../navigation/ui/screens/main_navigation_screen.dart';
 
 class _OnboardingItem {
   final String imagePath;
@@ -59,15 +61,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     if (!mounted) return;
 
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 500),
-        pageBuilder: (context, animation, secondaryAnimation) => const MainNavigationScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(opacity: animation, child: child);
-        },
-      ),
-    );
+    splashNotifier.markOnboardingComplete();
+    context.go(RouteNames.home);
   }
 
   void _nextPage() {

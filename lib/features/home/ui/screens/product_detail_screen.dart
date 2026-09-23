@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kornia/core/services/notification/local_noti.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/image_preview_helper.dart';
 import '../../utils/product_items.dart';
@@ -7,11 +9,7 @@ class ProductDetailScreen extends StatefulWidget {
   final ProductCardItem item;
   final String? heroTag;
 
-  const ProductDetailScreen({
-    super.key,
-    required this.item,
-    this.heroTag,
-  });
+  const ProductDetailScreen({super.key, required this.item, this.heroTag});
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -26,10 +24,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   void initState() {
     super.initState();
     _isFavorite = widget.item.isFavorite;
-    _allImages = [
-      widget.item.imageUrl,
-      ...widget.item.gallery,
-    ];
+    _allImages = [widget.item.imageUrl, ...widget.item.gallery];
   }
 
   Widget _buildBadge(ProductBadge badge) {
@@ -162,11 +157,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            icon,
-            size: 20,
-            color: AppColors.bronzeGold,
-          ),
+          Icon(icon, size: 20, color: AppColors.bronzeGold),
           const SizedBox(height: 8),
           Text(
             label,
@@ -190,17 +181,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
-  void _openEnlargedImage(BuildContext context, String imageUrl, String heroTag) {
+  void _openEnlargedImage(
+    BuildContext context,
+    String imageUrl,
+    String heroTag,
+  ) {
     ImagePreviewHelper.show(
       context: context,
       heroTag: heroTag,
       imageWidget: Image.network(
         imageUrl,
         fit: BoxFit.cover,
-        errorBuilder: (_, _, _) => Image.asset(
-          'assets/images/logo.jpg',
-          fit: BoxFit.cover,
-        ),
+        errorBuilder: (_, _, _) =>
+            Image.asset('assets/images/logo.jpg', fit: BoxFit.cover),
       ),
     );
   }
@@ -389,7 +382,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             color: AppColors.cardSurface,
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                              color: AppColors.bronzeGold.withValues(alpha: 0.3),
+                              color: AppColors.bronzeGold.withValues(
+                                alpha: 0.3,
+                              ),
                             ),
                           ),
                           child: const Text(
@@ -405,10 +400,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     const SizedBox(height: 24),
 
                     // Divider
-                    Container(
-                      height: 1,
-                      color: AppColors.cardSurface,
-                    ),
+                    Container(height: 1, color: AppColors.cardSurface),
                     const SizedBox(height: 24),
 
                     // Section: Descripción
@@ -482,7 +474,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         color: AppColors.cardSurface,
                         borderRadius: BorderRadius.circular(18),
                         border: Border.all(
-                          color: AppColors.antiqueBronze.withValues(alpha: 0.35),
+                          color: AppColors.antiqueBronze.withValues(
+                            alpha: 0.35,
+                          ),
                           width: 1,
                         ),
                       ),
@@ -492,7 +486,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             width: 44,
                             height: 44,
                             decoration: BoxDecoration(
-                              color: AppColors.antiqueBronze.withValues(alpha: 0.25),
+                              color: AppColors.antiqueBronze.withValues(
+                                alpha: 0.25,
+                              ),
                               shape: BoxShape.circle,
                               border: Border.all(
                                 color: AppColors.bronzeGold,
@@ -554,7 +550,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   children: [
                     // Back button (supports gesture or tap)
                     GestureDetector(
-                      onTap: () => Navigator.of(context).maybePop(),
+                      onTap: () => context.pop(),
                       child: Container(
                         width: 40,
                         height: 40,
@@ -595,10 +591,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: AppColors.cardSurface.withValues(alpha: 0.85),
+                              color: AppColors.cardSurface.withValues(
+                                alpha: 0.85,
+                              ),
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: AppColors.bronzeGold.withValues(alpha: 0.4),
+                                color: AppColors.bronzeGold.withValues(
+                                  alpha: 0.4,
+                                ),
                                 width: 1,
                               ),
                               boxShadow: [
@@ -691,24 +691,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.antiqueBronze.withValues(alpha: 0.4),
+                            color: AppColors.antiqueBronze.withValues(
+                              alpha: 0.4,
+                            ),
                             blurRadius: 12,
                             offset: const Offset(0, 4),
                           ),
                         ],
                       ),
                       child: ElevatedButton(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: AppColors.cardSurface,
-                              content: Text(
-                                'Solicitud enviada para "${widget.item.title}". Nos contactaremos contigo.',
-                                style: const TextStyle(color: AppColors.sandLight),
-                              ),
-                              duration: const Duration(seconds: 3),
-                            ),
-                          );
+                        onPressed: () async {
+                          await showTestNotification();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,

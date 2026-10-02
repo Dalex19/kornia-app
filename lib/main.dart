@@ -1,10 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:kornia/core/services/notification/get_token.dart';
-import 'package:kornia/core/services/notification/local_noti.dart';
-import 'package:kornia/core/services/notification/permission_notification.dart';
-import 'core/router/app_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kornia/core/notifications/get_token.dart';
+import 'package:kornia/core/notifications/local_noti.dart';
+import 'package:kornia/core/notifications/permission_notification.dart';
+import 'app/router/app_router.dart';
 import 'core/theme/app_colors.dart';
 import 'firebase_options.dart';
 
@@ -23,8 +24,8 @@ void main() async {
   await setupLocalNotifications();
   listenForegroundNotifications();
   listenNotificationTaps();
-  
-  runApp(const MyApp());
+
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kornia/features/home/presentation/providers/photo_notifier.dart';
+import 'package:kornia/features/home/presentation/state/photo_notifier.dart';
 import '../../../../app/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/image_preview_helper.dart';

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kornia/features/home/di/home_providers.dart';
 import 'package:kornia/features/home/domain/entities/photo_entity.dart';
-import 'package:kornia/features/home/presentation/providers/photo_provider.dart';
 
 class PhotoNotifier extends AsyncNotifier<List<PhotoEntity>> {
 

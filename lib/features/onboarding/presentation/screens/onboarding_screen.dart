@@ -62,7 +62,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (!mounted) return;
 
     splashNotifier.markOnboardingComplete();
-    context.go(RouteNames.home);
+    context.go(RouteNames.login);
   }
 
   void _nextPage() {
@@ -87,7 +87,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             // Top Bar with Skip Button
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 8.0,
+              ),
               child: SizedBox(
                 height: 40,
                 child: Row(
@@ -134,7 +137,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(24),
                             border: Border.all(
-                              color: AppColors.bronzeGold.withValues(alpha: 0.3),
+                              color: AppColors.bronzeGold.withValues(
+                                alpha: 0.3,
+                              ),
                               width: 1.5,
                             ),
                             boxShadow: [
@@ -146,10 +151,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ],
                           ),
                           clipBehavior: Clip.antiAlias,
-                          child: Image.asset(
-                            item.imagePath,
-                            fit: BoxFit.cover,
-                          ),
+                          child: Image.asset(item.imagePath, fit: BoxFit.cover),
                         ),
                         const SizedBox(height: 32),
 
@@ -188,7 +190,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
             // Bottom Navigation Area
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 24.0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -238,7 +243,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                         const SizedBox(width: 6),
                         Icon(
-                          isLastPage ? Icons.check : Icons.arrow_forward_rounded,
+                          isLastPage
+                              ? Icons.check
+                              : Icons.arrow_forward_rounded,
                           size: 18,
                         ),
                       ],

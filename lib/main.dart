@@ -28,15 +28,15 @@ void main() async {
   runApp(ProviderScope(child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
       title: 'Kornia',
       debugShowCheckedModeBanner: false,
-      routerConfig: appRouter,
+      routerConfig: ref.watch(routerProvider),
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: AppColors.darkBackground,

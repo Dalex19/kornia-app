@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kornia/features/auth/presentation/screens/login_screen.dart';
+import 'package:kornia/features/auth/presentation/screens/register_screen.dart';
+import 'package:kornia/features/auth/presentation/state/auth_state_provider.dart';
 import 'package:kornia/features/home/domain/entities/photo_entity.dart';
 import 'package:liquid_tabbar_minimize/liquid_tabbar_minimize.dart';
 
@@ -11,42 +15,57 @@ import '../../features/splash/presentation/screens/splash_screen.dart';
 import 'route_names.dart';
 import 'splash_notifier.dart';
 
-final GoRouter appRouter = GoRouter(
-  initialLocation: RouteNames.splash,
-  observers: [
-    LiquidRouteObserver.instance,
-  ],
 
-  // GoRouter escucha al notifier: cuando splashNotifier llama a
-  // notifyListeners(), se re-evalúa el redirect automáticamente.
-  refreshListenable: splashNotifier,
+final routerProvider = Provider<GoRouter>((ref) {
+  // Notifica a GoRouter cuando cambia la sesión.
+  final authRefresh = ValueNotifier<int>(0);
+  ref.listen(authStateProvider, (_, __) => authRefresh.value++);
+  ref.onDispose(authRefresh.dispose);
 
-  redirect: (BuildContext context, GoRouterState state) {
-    final String location = state.matchedLocation;
+  final router = GoRouter(
+    initialLocation: RouteNames.splash,
+    observers: [LiquidRouteObserver.instance],
+    // Se reevalúa el redirect si cambia el splash O la sesión.
+    refreshListenable: Listenable.merge([splashNotifier, authRefresh]),
 
-    // ── Ruta /splash ──────────────────────────────────────────────────────
-    if (location == RouteNames.splash) {
-      // [CONSUME] destination == null → el timer aún no terminó; permanece en splash.
-      // [CONSUME] destination != null → splashNotifier.resolveDestination() ya corrió;
-      //           GoRouter redirige al destino que el notifier decidió (home u onboarding).
-      return splashNotifier.destination; // null = quedate, String = ve a esa ruta
-    }
+    redirect: (context, state) {
+      final loc = state.matchedLocation;
+      final destination = splashNotifier.destination;
+      final auth = ref.read(authStateProvider);
 
-    // ── Ruta /onboarding ─────────────────────────────────────────────────
-    // El onboarding se muestra a sí mismo sin necesidad de ser redirigido.
-    if (location == RouteNames.onboarding) return null;
+      // 1. Splash sin resolver o Firebase restaurando la sesión: esperar.
+      if (destination == null || auth.isLoading) {
+        return loc == RouteNames.splash ? null : RouteNames.splash;
+      }
 
-    // ── Resto de rutas ────────────────────────────────────────────────────
-    // Si el notifier ya resolvió y el destino es onboarding, reenvía.
-    // Esto cubre el caso en que el usuario llega directamente a /home
-    // sin pasar por el splash (ej. hot-reload en desarrollo).
-    final String? resolved = splashNotifier.destination;
-    if (resolved == RouteNames.onboarding) return RouteNames.onboarding;
+      // 2. Primera vez: onboarding antes que nada.
+      if (destination == RouteNames.onboarding) {
+        return loc == RouteNames.onboarding ? null : RouteNames.onboarding;
+      }
 
-    return null;
-  },
+      final loggedIn = auth.value != null;
 
-  routes: [
+      // 3. Salir del splash según la sesión.
+      if (loc == RouteNames.splash) {
+        return loggedIn ? RouteNames.home : RouteNames.login;
+      }
+
+      // 4. Sin sesión: solo rutas públicas.
+      if (!loggedIn && !RouteNames.publicRoutes.contains(loc)) {
+        return RouteNames.login;
+      }
+
+      // 5. Con sesión: login y registro ya no tienen sentido.
+      if (loggedIn &&
+          (loc == RouteNames.login || loc == RouteNames.register)) {
+        return RouteNames.home;
+      }
+
+      return null;
+    },
+
+   
+routes: [
     GoRoute(
       path: RouteNames.splash,
       builder: (BuildContext context, GoRouterState state) => const SplashScreen(),
@@ -76,5 +95,11 @@ final GoRouter appRouter = GoRouter(
         );
       },
     ),
+    GoRoute(path: RouteNames.login, builder: (context, state) => const LoginScreen()),
+    GoRoute(path: RouteNames.register, builder: (context, state) => const RegisterScreen()),
   ],
-);
+  );
+
+  ref.onDispose(router.dispose);
+  return router;
+});

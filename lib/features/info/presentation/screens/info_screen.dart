@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:kornia/features/auth/presentation/state/auth_notifier.dart';
 import '../../../../core/theme/app_colors.dart';
 
-class InfoScreen extends StatefulWidget {
+class InfoScreen extends ConsumerStatefulWidget {
   const InfoScreen({super.key});
 
   @override
-  State<InfoScreen> createState() => _InfoScreenState();
+  ConsumerState<InfoScreen> createState() => _InfoScreenState();
 }
 
-class _InfoScreenState extends State<InfoScreen> {
+class _InfoScreenState extends ConsumerState<InfoScreen> {
   String _appVersion = '1.0.0';
 
   // URL de destino a configurar por el desarrollador
@@ -47,8 +49,64 @@ class _InfoScreenState extends State<InfoScreen> {
     }
   }
 
+  Future<void> _showLogoutDialog(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.cardSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Text(
+          '¿Cerrar sesión?',
+          style: TextStyle(
+            color: AppColors.sandLight,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: const Text(
+          'Se cerrará tu sesión actual.',
+          style: TextStyle(color: AppColors.sandMuted),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: AppColors.sandMuted),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text(
+              'Cerrar sesión',
+              style: TextStyle(
+                color: AppColors.terracotta,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      await ref.read(authNotifierProvider.notifier).logoutUser();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue<void>>(authNotifierProvider, (_, next) {
+      if (next is AsyncError && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No se pudo cerrar sesión. Inténtalo de nuevo.'),
+            backgroundColor: AppColors.terracotta,
+          ),
+        );
+      }
+    });
     return Scaffold(
       backgroundColor: AppColors.darkBackground,
       appBar: AppBar(
@@ -227,6 +285,48 @@ class _InfoScreenState extends State<InfoScreen> {
                       ],
                     ),
                   ],
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Cerrar sesión
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: ref.watch(authNotifierProvider).isLoading
+                      ? null
+                      : () => _showLogoutDialog(context),
+                  icon: ref.watch(authNotifierProvider).isLoading
+                      ? const SizedBox(
+                          height: 18,
+                          width: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppColors.terracotta,
+                          ),
+                        )
+                      : const Icon(
+                          Icons.logout_rounded,
+                          color: AppColors.terracotta,
+                          size: 20,
+                        ),
+                  label: const Text(
+                    'Cerrar sesión',
+                    style: TextStyle(
+                      color: AppColors.terracotta,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    side: BorderSide(
+                      color: AppColors.terracotta.withValues(alpha: 0.4),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 32),

@@ -172,3 +172,4 @@ yarn-error.log*
 .svn/
 .swiftpm/
 migrate_working_dir/
+.github/scripts/node_modules/

@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kornia/core/notifications/local_noti.dart';
+import 'package:kornia/core/notifications/notification_providers.dart';
 import 'package:kornia/features/home/domain/entities/photo_entity.dart';
 import 'package:kornia/features/home/presentation/widgets/spec_card.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/image_preview_helper.dart';
 
-class ProductDetailScreen extends StatefulWidget {
+class ProductDetailScreen extends ConsumerStatefulWidget {
   final PhotoEntity item;
   final String? heroTag;
 
   const ProductDetailScreen({super.key, required this.item, this.heroTag});
 
   @override
-  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+  ConsumerState<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
 
-class _ProductDetailScreenState extends State<ProductDetailScreen> {
+class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   late bool _isFavorite;
   int _selectedImageIndex = 0;
   late final List<String> _allImages = [];
@@ -523,7 +524,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                       child: ElevatedButton(
                         onPressed: () async {
-                          await showTestNotification();
+                          await ref.read(notificationServiceProvider).show(title: 'Preparando tu pedido', body: 'Te avisaremos cuando tengamos más noticias sobre tu pedido');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,

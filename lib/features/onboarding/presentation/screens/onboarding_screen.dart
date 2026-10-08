@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kornia/core/notifications/notification_providers.dart';
 import '../../../../app/router/route_names.dart';
 import '../../../../app/router/splash_notifier.dart';
 import '../../data/onboarding_storage_service.dart';
@@ -17,14 +19,14 @@ class _OnboardingItem {
   });
 }
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final PageController _pageController = PageController();
   final OnboardingStorageService _storageService = OnboardingStorageService();
   int _currentPage = 0;
@@ -58,6 +60,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Future<void> _completeOnboarding() async {
     await _storageService.setSeenOnboarding(true);
+    await ref.read(notificationServiceProvider).requestPermissions();
 
     if (!mounted) return;
 

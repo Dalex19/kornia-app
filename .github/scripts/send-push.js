@@ -67,7 +67,7 @@ async function main() {
       title,
       body: truncate(text, MAX_BODY),
     },
-    data: { tipo: 'evangelio', fecha: date },
+    data: { payload: 'evangelio', fecha: date },
   });
 
   console.log('Enviado:', id);

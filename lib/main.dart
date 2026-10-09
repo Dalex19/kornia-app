@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:kornia/app/bootstrap.dart';
 import 'app/router/app_router.dart';
 import 'core/theme/app_colors.dart';
-
 
 void main() async {
 final container = await bootstrap();

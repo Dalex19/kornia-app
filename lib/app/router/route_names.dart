@@ -24,4 +24,9 @@ abstract class RouteNames {
   //public routes: 
   static const Set<String> publicRoutes = {splash, onboarding, login, register, recoveryPassword};
     
+  //gospel
+  static const String gospelSegment = 'gospel';
+  static const String gospel = '$home/$gospelSegment';
+  
+
 }

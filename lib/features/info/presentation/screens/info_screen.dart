@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:kornia/core/widgets/app_dialog.dart';
 import 'package:kornia/features/auth/presentation/state/auth_notifier.dart';
 import '../../../../core/theme/app_colors.dart';
 
@@ -50,44 +51,13 @@ class _InfoScreenState extends ConsumerState<InfoScreen> {
   }
 
   Future<void> _showLogoutDialog(BuildContext context) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.cardSurface,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        title: const Text(
-          '¿Cerrar sesión?',
-          style: TextStyle(
-            color: AppColors.sandLight,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: const Text(
-          'Se cerrará tu sesión actual.',
-          style: TextStyle(color: AppColors.sandMuted),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text(
-              'Cancelar',
-              style: TextStyle(color: AppColors.sandMuted),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text(
-              'Cerrar sesión',
-              style: TextStyle(
-                color: AppColors.terracotta,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
+    final confirmed = await AppDialog.show(
+      context,
+      title: '¿Cerrar sesión?',
+      message: 'Se cerrará tu sesión actual.',
+      confirmText: 'Cerrar sesión',
+      cancelText: 'Cancelar',
+      confirmTextColor: AppColors.terracotta,
     );
 
     if (confirmed == true && mounted) {
